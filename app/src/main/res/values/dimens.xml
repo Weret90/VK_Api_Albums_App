@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="album_cover_photo_width_size">200dp</dimen>
-    <dimen name="album_cover_photo_height_size">150dp</dimen>
+    <dimen name="album_and_photo_cover_width_size">200dp</dimen>
+    <dimen name="album_and_photo_cover_height_size">150dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
 </resources>

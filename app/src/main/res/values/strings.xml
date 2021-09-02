@@ -1,7 +1,18 @@
 <resources>
     <string name="app_name">VK Api App</string>
-    <string name="album_cover_photo">Миниатюра обложки альбома</string>
-    <string name="access_is_allowed">Доступ получен</string>
-    <string name="access_is_denied">Доступ отклонен: для использования приложения необходимо предоставить доступ</string>
+    <string name="album_cover">Миниатюра обложки альбома</string>
+    <string name="photo_cover">Миниатюра фотографии</string>
+    <string name="access_is_denied">В доступе отказано</string>
+    <string name="authorization_button_text">Войти</string>
+    <string name="authorization_text_view_text">Перед просмотром фотоальбомов ВК необходимо авторизоваться и дать приложению доступ к данным страницы</string>
+    <string name="authorization_text_view_access_denied_text">В доступе отказано: для использования приложения необходимо предоставить доступ к данным страницы</string>
+    <string name="authorization_button_try_again_text">Попробовать снова</string>
+    <string name="authorization_text_view_access_success_text">Авторизация прошла успешно: нажмите на кнопку, чтобы начать просмотр альбомов</string>
+    <string name="authorization_button_start_watching_text">Начать просмотр</string>
+    <string name="app_state_error_text">ОШИБКА: %s</string>
+    <string name="button_load_more_photos_text">Загрузить еще</string>
+    <string name="buttonDownloadPhotosText">Загрузить еще</string>
+    <string name="original_photo">Оригинальная фотография</string>
+    <string name="snackbar_reload">Reload</string>
     <integer name="com_vk_sdk_AppId">7939781</integer>
 </resources>

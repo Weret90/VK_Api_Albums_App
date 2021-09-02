@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/routes"
-    app:startDestination="@id/listOfPhotoAlbumsFragment">
+    app:startDestination="@id/autorizationFragment">
 
     <fragment
         android:id="@+id/listOfPhotoAlbumsFragment"
@@ -20,4 +20,9 @@
         android:name="com.umbrella.vkapiapp.view.PhotoDetailFragment"
         android:label="fragment_photo_detail"
         tools:layout="@layout/fragment_photo_detail" />
+    <fragment
+        android:id="@+id/autorizationFragment"
+        android:name="com.umbrella.vkapiapp.view.AuthorizationFragment"
+        android:label="fragment_autorization"
+        tools:layout="@layout/fragment_authorization" />
 </navigation>
