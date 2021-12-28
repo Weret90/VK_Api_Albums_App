@@ -2,15 +2,17 @@ package com.umbrella.vkapiapp.di
 
 import com.umbrella.vkapiapp.data.local.LocalStorage
 import com.umbrella.vkapiapp.data.local.LocalStorageImpl
+import com.umbrella.vkapiapp.data.remote.RetroService
 import com.umbrella.vkapiapp.data.remote.TokenInterceptor
 import com.umbrella.vkapiapp.data.repository.AuthRepositoryImpl
-import com.umbrella.vkapiapp.domain.repository.AuthRepository
-import com.umbrella.vkapiapp.data.remote.RetroService
 import com.umbrella.vkapiapp.data.repository.PhotosRepositoryImpl
+import com.umbrella.vkapiapp.domain.repository.AuthRepository
 import com.umbrella.vkapiapp.domain.repository.PhotosRepository
 import com.umbrella.vkapiapp.domain.usecase.*
-import com.umbrella.vkapiapp.presentation.viewmodels.AuthorizationViewModel
+import com.umbrella.vkapiapp.presentation.fragments.AlbumsFragment
+import com.umbrella.vkapiapp.presentation.fragments.PhotosFragment
 import com.umbrella.vkapiapp.presentation.viewmodels.AlbumsViewModel
+import com.umbrella.vkapiapp.presentation.viewmodels.AuthorizationViewModel
 import com.umbrella.vkapiapp.presentation.viewmodels.PhotosViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,12 +30,22 @@ val viewModelsModule = module {
         )
     }
 
-    viewModel {
-        AlbumsViewModel(getAlbumsUseCase = get(), clearTokenUseCase = get())
+    scope<AlbumsFragment> {
+        scoped {
+            GetAlbumsUseCase(repository = get())
+        }
+        viewModel {
+            AlbumsViewModel(getAlbumsUseCase = get(), clearTokenUseCase = get())
+        }
     }
 
-    viewModel {
-        PhotosViewModel(getPhotosByAlbumIdUseCase = get())
+    scope<PhotosFragment> {
+        scoped {
+            GetPhotosByAlbumIdUseCase(repository = get())
+        }
+        viewModel {
+            PhotosViewModel(getPhotosByAlbumIdUseCase = get())
+        }
     }
 }
 
@@ -64,13 +76,7 @@ val useCasesModule = module {
         SaveTokenUseCase(repository = get())
     }
     factory {
-        GetAlbumsUseCase(repository = get())
-    }
-    factory {
         ClearTokenUseCase(repository = get())
-    }
-    factory {
-        GetPhotosByAlbumIdUseCase(repository = get())
     }
 }
 

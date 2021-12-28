@@ -2,4 +2,48 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/routes" />
+    android:id="@+id/routes"
+    app:startDestination="@id/authorizationFragment">
+    <fragment
+        android:id="@+id/authorizationFragment"
+        android:name="com.umbrella.vkapiapp.presentation.fragments.AuthorizationFragment"
+        android:label="fragment_authorization"
+        tools:layout="@layout/fragment_authorization" >
+        <action
+            android:id="@+id/action_navigate_to_albums_fragment"
+            app:destination="@id/albumsFragment"
+            app:popUpTo="@id/routes" />
+    </fragment>
+    <fragment
+        android:id="@+id/albumsFragment"
+        android:name="com.umbrella.vkapiapp.presentation.fragments.AlbumsFragment"
+        android:label="fragment_albums"
+        tools:layout="@layout/fragment_albums" >
+        <action
+            android:id="@+id/action_navigate_to_photosFragment"
+            app:destination="@id/photosFragment" />
+        <action
+            android:id="@+id/action_exit_from_account"
+            app:destination="@id/authorizationFragment"
+            app:popUpTo="@id/routes" />
+    </fragment>
+    <fragment
+        android:id="@+id/photosFragment"
+        android:name="com.umbrella.vkapiapp.presentation.fragments.PhotosFragment"
+        android:label="PhotosFragment" >
+        <action
+            android:id="@+id/action_navigate_to_photoDetailFragment"
+            app:destination="@id/photoDetailFragment" />
+        <argument
+            android:name="albumId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoDetailFragment"
+        android:name="com.umbrella.vkapiapp.presentation.fragments.PhotoDetailFragment"
+        android:label="PhotoDetailFragment" >
+        <argument
+            android:name="photo"
+            app:argType="com.umbrella.vkapiapp.presentation.model.PhotoPresentationModel" />
+    </fragment>
+</navigation>

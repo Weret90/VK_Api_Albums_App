@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.umbrella.vkapiapp.R
@@ -19,16 +20,7 @@ class PhotoDetailFragment : Fragment() {
     private var _binding: FragmentPhotoDetailBinding? = null
     private val binding get() = _binding!!
 
-    companion object {
-        private const val KEY_PHOTO = "photo"
-        fun newInstance(photo: PhotoPresentationModel): PhotoDetailFragment {
-            return PhotoDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_PHOTO, photo)
-                }
-            }
-        }
-    }
+    private val args by navArgs<PhotoDetailFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,21 +32,20 @@ class PhotoDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireArguments().getParcelable<PhotoPresentationModel>(KEY_PHOTO)?.let { photo ->
 
-            binding.loadingBar.show()
+        val photo = args.photo
 
-            downloadPhoto(photo)
+        downloadPhoto(photo)
 
-            with(binding) {
-                likes.text = photo.likes.count.toString()
-                reposts.text = photo.reposts.count.toString()
-                comments.text = photo.comments.count.toString()
-            }
+        with(binding) {
+            likes.text = photo.likes.count.toString()
+            reposts.text = photo.reposts.count.toString()
+            comments.text = photo.comments.count.toString()
         }
     }
 
     private fun downloadPhoto(photo: PhotoPresentationModel) {
+        binding.loadingBar.show()
         Picasso.get().load(photo.sizes.last().url).into(binding.bigPhoto, object : Callback {
             override fun onSuccess() {
                 _binding?.photoInfoLayout?.show()

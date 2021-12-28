@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.umbrella.vkapiapp.R
 import com.umbrella.vkapiapp.databinding.FragmentAuthorizationBinding
 import com.umbrella.vkapiapp.presentation.viewmodels.AuthorizationViewModel
@@ -16,12 +17,6 @@ class AuthorizationFragment : Fragment() {
     private var _binding: FragmentAuthorizationBinding? = null
     private val binding get() = _binding!!
     private val viewModel: AuthorizationViewModel by viewModel()
-
-    companion object {
-        fun newInstance(): AuthorizationFragment {
-            return AuthorizationFragment()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,9 +41,7 @@ class AuthorizationFragment : Fragment() {
     }
 
     private fun navigateToAlbumsFragment() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_container, AlbumsFragment.newInstance())
-            .commit()
+        findNavController().navigate(R.id.action_navigate_to_albums_fragment)
     }
 
     override fun onDestroyView() {

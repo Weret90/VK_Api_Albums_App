@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umbrella.vkapiapp.R
@@ -12,37 +14,34 @@ import com.umbrella.vkapiapp.databinding.FragmentPhotosBinding
 import com.umbrella.vkapiapp.domain.entity.Photo
 import com.umbrella.vkapiapp.presentation.adapters.PhotosAdapter
 import com.umbrella.vkapiapp.presentation.mapper.toPresentationModel
+import com.umbrella.vkapiapp.presentation.model.PhotoPresentationModel
 import com.umbrella.vkapiapp.presentation.utils.*
 import com.umbrella.vkapiapp.presentation.viewmodels.PhotosViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.createScope
+import org.koin.core.component.inject
+import org.koin.core.scope.Scope
 
-class PhotosFragment : Fragment() {
+class PhotosFragment : Fragment(), KoinScopeComponent {
 
     private var _binding: FragmentPhotosBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: PhotosViewModel by viewModel()
     private val photosAdapter by lazy {
         PhotosAdapter()
     }
-    private val albumId: String by lazy {
-        requireArguments().getString(KEY_ALBUM_ID, "")
+    override val scope: Scope by lazy {
+        createScope(this)
     }
+    private val viewModel: PhotosViewModel by inject()
+    private val args by navArgs<PhotosFragmentArgs>()
+
     private var positionOfPhotoWhereDownloadStart = 0
     private var isAllPhotosDownloadedFromAlbum = false
 
     companion object {
-        private const val KEY_ALBUM_ID = "albumId"
         private const val MIN_COLUMN_COUNT = 3
         private const val DOWNLOADING_PHOTOS_COUNT = 50
         private const val SCROLL_DIRECTION_DOWN = 1
-
-        fun newInstance(albumId: String): PhotosFragment {
-            return PhotosFragment().apply {
-                arguments = Bundle().apply {
-                    putString(KEY_ALBUM_ID, albumId)
-                }
-            }
-        }
     }
 
     override fun onCreateView(
@@ -68,7 +67,7 @@ class PhotosFragment : Fragment() {
         }
 
         photosAdapter.onPhotoClickListener = {
-            navigateToPhotoDetailFragment(it)
+            navigateToPhotoDetailFragment(it.toPresentationModel())
         }
 
         binding.photosRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -87,13 +86,10 @@ class PhotosFragment : Fragment() {
         }
     }
 
-    private fun navigateToPhotoDetailFragment(photo: Photo) {
-        parentFragmentManager.beginTransaction()
-            .replace(
-                R.id.main_container, PhotoDetailFragment.newInstance(photo.toPresentationModel())
-            )
-            .addToBackStack(null)
-            .commit()
+    private fun navigateToPhotoDetailFragment(photo: PhotoPresentationModel) {
+        findNavController().navigate(
+            PhotosFragmentDirections.actionNavigateToPhotoDetailFragment(photo)
+        )
     }
 
     private fun renderState(state: State<List<Photo>>) {
@@ -124,12 +120,17 @@ class PhotosFragment : Fragment() {
 
     private fun downloadPhotos() {
         viewModel.getPhotosFromAlbum(
-            albumId, positionOfPhotoWhereDownloadStart, DOWNLOADING_PHOTOS_COUNT
+            args.albumId, positionOfPhotoWhereDownloadStart, DOWNLOADING_PHOTOS_COUNT
         )
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        scope.close()
+        super.onDestroy()
     }
 }

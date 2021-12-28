@@ -3,31 +3,34 @@ package com.umbrella.vkapiapp.presentation.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.umbrella.vkapiapp.R
 import com.umbrella.vkapiapp.databinding.FragmentAlbumsBinding
 import com.umbrella.vkapiapp.domain.entity.Album
-import com.umbrella.vkapiapp.presentation.viewmodels.AlbumsViewModel
 import com.umbrella.vkapiapp.presentation.adapters.AlbumsAdapter
 import com.umbrella.vkapiapp.presentation.utils.*
+import com.umbrella.vkapiapp.presentation.viewmodels.AlbumsViewModel
 import com.vk.api.sdk.VK
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.createScope
+import org.koin.core.component.inject
+import org.koin.core.scope.Scope
 
-class AlbumsFragment : Fragment() {
+class AlbumsFragment : Fragment(), KoinScopeComponent {
 
     private var _binding: FragmentAlbumsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: AlbumsViewModel by viewModel()
     private val albumsAdapter by lazy {
         AlbumsAdapter()
     }
+    override val scope: Scope by lazy {
+        createScope(this)
+    }
+    private val viewModel: AlbumsViewModel by inject()
 
     companion object {
         private const val MIN_COLUMN_COUNT = 2
-
-        fun newInstance(): AlbumsFragment {
-            return AlbumsFragment()
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,10 +92,9 @@ class AlbumsFragment : Fragment() {
     }
 
     private fun navigateToPhotosFragment(albumId: String) {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_container, PhotosFragment.newInstance(albumId))
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(
+            AlbumsFragmentDirections.actionNavigateToPhotosFragment(albumId)
+        )
     }
 
     override fun onDestroyView() {
@@ -108,9 +110,12 @@ class AlbumsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         viewModel.clearToken()
         VK.logout()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_container, AuthorizationFragment.newInstance())
-            .commit()
+        findNavController().navigate(R.id.action_exit_from_account)
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        scope.close()
+        super.onDestroy()
     }
 }
