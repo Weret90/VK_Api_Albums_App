@@ -2,27 +2,4 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/routes"
-    app:startDestination="@id/autorizationFragment">
-
-    <fragment
-        android:id="@+id/listOfPhotoAlbumsFragment"
-        android:name="com.umbrella.vkapiapp.view.ListOfPhotoAlbumsFragment"
-        android:label="fragment_list_of_photo_albums"
-        tools:layout="@layout/fragment_list_of_photo_albums" />
-    <fragment
-        android:id="@+id/photoListFragment"
-        android:name="com.umbrella.vkapiapp.view.PhotoListFragment"
-        android:label="fragment_photo_list"
-        tools:layout="@layout/fragment_photo_list" />
-    <fragment
-        android:id="@+id/photoDetailFragment"
-        android:name="com.umbrella.vkapiapp.view.PhotoDetailFragment"
-        android:label="fragment_photo_detail"
-        tools:layout="@layout/fragment_photo_detail" />
-    <fragment
-        android:id="@+id/autorizationFragment"
-        android:name="com.umbrella.vkapiapp.view.AuthorizationFragment"
-        android:label="fragment_autorization"
-        tools:layout="@layout/fragment_authorization" />
-</navigation>
+    android:id="@+id/routes" />
