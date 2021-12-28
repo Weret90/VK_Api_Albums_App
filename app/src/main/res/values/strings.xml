@@ -13,6 +13,8 @@
     <string name="button_load_more_photos_text">Загрузить еще</string>
     <string name="buttonDownloadPhotosText">Загрузить еще</string>
     <string name="original_photo">Оригинальная фотография</string>
-    <string name="snackbar_reload">Reload</string>
+    <string name="token_expired">Истек срок токена, требуется повторная авторизация</string>
+    <string name="snack_bar_action_text">Reload</string>
+    <string name="menu_exit">Exit</string>
     <integer name="com_vk_sdk_AppId">7939781</integer>
 </resources>
