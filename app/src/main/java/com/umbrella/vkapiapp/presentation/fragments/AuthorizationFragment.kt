@@ -1,9 +1,7 @@
 package com.umbrella.vkapiapp.presentation.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.umbrella.vkapiapp.R
@@ -17,6 +15,11 @@ class AuthorizationFragment : Fragment() {
     private var _binding: FragmentAuthorizationBinding? = null
     private val binding get() = _binding!!
     private val viewModel: AuthorizationViewModel by viewModel()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,5 +50,15 @@ class AuthorizationFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.refresh_authorization_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.getToken()
+        return super.onOptionsItemSelected(item)
     }
 }

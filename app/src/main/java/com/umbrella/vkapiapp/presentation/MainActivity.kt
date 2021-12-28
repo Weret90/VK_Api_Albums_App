@@ -3,7 +3,6 @@ package com.umbrella.vkapiapp.presentation
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
 import com.umbrella.vkapiapp.R
 import com.umbrella.vkapiapp.databinding.ActivityMainBinding
 import com.umbrella.vkapiapp.presentation.utils.showSnackBar
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val callback = object : VKAuthCallback {
             override fun onLogin(token: VKAccessToken) {
                 viewModel.saveToken(token.accessToken)
-                navigateToAlbumsFragment()
+                this@MainActivity.recreate()
             }
 
             override fun onLoginFailed(authException: VKAuthException) {
@@ -56,19 +55,9 @@ class MainActivity : AppCompatActivity() {
             override fun onTokenExpired() {
                 viewModel.clearToken()
                 this@MainActivity.showToast(getString(R.string.token_expired))
-                navigateToAuthorizationFragment()
+                this@MainActivity.finish()
             }
         }
         VK.addTokenExpiredHandler(tokenTracker)
-    }
-
-    private fun navigateToAlbumsFragment() {
-        Navigation.findNavController(this, R.id.main_container)
-            .navigate(R.id.action_navigate_to_albums_fragment)
-    }
-
-    private fun navigateToAuthorizationFragment() {
-        Navigation.findNavController(this, R.id.main_container)
-            .navigate(R.id.authorizationFragment)
     }
 }
