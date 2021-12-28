@@ -5,4 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".presentation.fragments.AuthorizationFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/default_margin"
+        android:gravity="center"
+        android:text="@string/welcome_message"
+        android:textStyle="bold" />
+
 </FrameLayout>
